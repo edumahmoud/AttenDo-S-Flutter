@@ -1,0 +1,1241 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-ocean: var(--ocean);
+  --color-ocean-foreground: var(--ocean-foreground);
+  --color-teal-accent: var(--teal-accent);
+  --color-teal-accent-foreground: var(--teal-accent-foreground);
+  --color-amber-accent: var(--amber-accent);
+  --color-amber-accent-foreground: var(--amber-accent-foreground);
+}
+
+:root {
+  --radius: 0.75rem;
+  /* Ocean Blue primary palette */
+  --ocean: oklch(0.45 0.15 240);
+  --ocean-foreground: oklch(0.985 0 0);
+  --teal-accent: oklch(0.55 0.12 175);
+  --teal-accent-foreground: oklch(0.985 0 0);
+  --amber-accent: oklch(0.75 0.15 75);
+  --amber-accent-foreground: oklch(0.25 0.05 75);
+
+  /* Warm white background */
+  --background: oklch(0.995 0.003 90);
+  --foreground: oklch(0.175 0.02 260);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.175 0.02 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.175 0.02 260);
+
+  /* Primary = Ocean Blue */
+  --primary: oklch(0.45 0.15 240);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.96 0.01 240);
+  --secondary-foreground: oklch(0.25 0.05 240);
+  --muted: oklch(0.965 0.005 240);
+  --muted-foreground: oklch(0.50 0.02 260);
+  --accent: oklch(0.55 0.12 175);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.91 0.01 240);
+  --input: oklch(0.91 0.01 240);
+  --ring: oklch(0.45 0.15 240);
+  --chart-1: oklch(0.45 0.15 240);
+  --chart-2: oklch(0.55 0.12 175);
+  --chart-3: oklch(0.75 0.15 75);
+  --chart-4: oklch(0.6 0.15 300);
+  --chart-5: oklch(0.65 0.2 30);
+
+  /* Sidebar = Light in light mode */
+  --sidebar: oklch(0.98 0.005 240);
+  --sidebar-foreground: oklch(0.25 0.05 240);
+  --sidebar-primary: oklch(0.45 0.15 240);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.93 0.01 240);
+  --sidebar-accent-foreground: oklch(0.25 0.05 240);
+  --sidebar-border: oklch(0.91 0.01 240);
+  --sidebar-ring: oklch(0.45 0.15 240);
+}
+
+.dark {
+  /* ─── Warm Deep Dark Palette ─── */
+  /* Background: deep neutral-charcoal with warm undertone (not pure black) */
+  --ocean: oklch(0.62 0.13 240);
+  --ocean-foreground: oklch(0.98 0.005 240);
+  --teal-accent: oklch(0.65 0.10 175);
+  --teal-accent-foreground: oklch(0.98 0.005 240);
+  --amber-accent: oklch(0.78 0.13 75);
+  --amber-accent-foreground: oklch(0.18 0.04 75);
+
+  /* Surfaces: layered elevation with warm neutral base */
+  --background: oklch(0.14 0.01 260);
+  --foreground: oklch(0.90 0.01 240);
+  --card: oklch(0.19 0.012 260);
+  --card-foreground: oklch(0.90 0.01 240);
+  --popover: oklch(0.19 0.012 260);
+  --popover-foreground: oklch(0.90 0.01 240);
+
+  /* Primary: softer, more comfortable ocean blue */
+  --primary: oklch(0.62 0.13 240);
+  --primary-foreground: oklch(0.98 0.005 240);
+  --secondary: oklch(0.24 0.015 260);
+  --secondary-foreground: oklch(0.88 0.01 240);
+  --muted: oklch(0.24 0.015 260);
+  --muted-foreground: oklch(0.62 0.015 260);
+  --accent: oklch(0.65 0.10 175);
+  --accent-foreground: oklch(0.98 0.005 240);
+  --destructive: oklch(0.65 0.18 25);
+  --border: oklch(0.28 0.015 260);
+  --input: oklch(0.26 0.015 260);
+  --ring: oklch(0.62 0.13 240);
+
+  /* Charts: comfortable mid-tone colors */
+  --chart-1: oklch(0.62 0.13 240);
+  --chart-2: oklch(0.65 0.10 175);
+  --chart-3: oklch(0.78 0.13 75);
+  --chart-4: oklch(0.68 0.15 300);
+  --chart-5: oklch(0.72 0.16 30);
+
+  /* Sidebar: slightly elevated surface */
+  --sidebar: oklch(0.16 0.012 260);
+  --sidebar-foreground: oklch(0.90 0.01 240);
+  --sidebar-primary: oklch(0.62 0.13 240);
+  --sidebar-primary-foreground: oklch(0.98 0.005 240);
+  --sidebar-accent: oklch(0.22 0.015 260);
+  --sidebar-accent-foreground: oklch(0.90 0.01 240);
+  --sidebar-border: oklch(0.26 0.015 260);
+  --sidebar-ring: oklch(0.62 0.13 240);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* ─── Direction-Aware Typography for Summary View ─── */
+/* RTL (Arabic) styles */
+.prose-summary {
+  font-feature-settings: "ss01", "ss02";
+  line-height: 1.9;
+  color: var(--foreground);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Prose-summary styles with CSS logical properties (auto RTL/LTR) */
+.prose-summary {
+  text-align: start;
+}
+
+.prose-summary h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #075985;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #bae6fd;
+  line-height: 1.4;
+}
+
+.prose-summary h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0369a1;
+  margin-top: 1.75rem;
+  margin-bottom: 0.625rem;
+  line-height: 1.4;
+}
+
+.prose-summary h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0284c7;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.prose-summary h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0ea5e9;
+  margin-top: 1.25rem;
+  margin-bottom: 0.375rem;
+}
+
+.prose-summary p {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.9375rem;
+  line-height: 1.9;
+}
+
+/* Direction-aware list styles */
+.prose-summary ul {
+  list-style-type: none;
+  margin: 0.75rem 0;
+  padding-inline-start: 1.25rem;
+}
+
+.prose-summary ul li {
+  position: relative;
+  margin-bottom: 0.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  padding-inline-start: 1rem;
+}
+
+.prose-summary ul li::before {
+  content: "◆";
+  position: absolute;
+  color: #0d9488;
+  font-size: 0.625rem;
+  top: 0.55em;
+  inset-inline-start: 0;
+}
+
+.prose-summary ol {
+  list-style-type: none;
+  margin: 0.75rem 0;
+  padding-inline-start: 1.25rem;
+  counter-reset: list-counter;
+}
+
+.prose-summary ol li {
+  position: relative;
+  margin-bottom: 0.5rem;
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  padding-inline-start: 1.5rem;
+  counter-increment: list-counter;
+}
+
+[dir="rtl"] .prose-summary ol li::before {
+  content: counter(list-counter, arabic-indic) ".";
+  position: absolute;
+  inset-inline-start: 0;
+  color: #0369a1;
+  font-weight: 700;
+  font-size: 0.8125rem;
+}
+
+[dir="ltr"] .prose-summary ol li::before {
+  content: counter(list-counter) ".";
+  position: absolute;
+  inset-inline-start: 0;
+  color: #0369a1;
+  font-weight: 700;
+  font-size: 0.8125rem;
+}
+
+/* Direction-aware blockquote */
+.prose-summary blockquote {
+  margin: 1rem 0;
+  background: #f0fdfa;
+  border-radius: 0.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-inline-start: 1rem;
+  padding-inline-end: 1rem;
+  border-inline-start: 4px solid #0d9488;
+}
+
+.prose-summary blockquote p {
+  color: #134e4a;
+  font-style: italic;
+  margin: 0;
+}
+
+.prose-summary strong {
+  font-weight: 700;
+  color: #0369a1;
+}
+
+.prose-summary em {
+  font-style: italic;
+  color: #374151;
+}
+
+.prose-summary code {
+  background: #f0fdfa;
+  color: #0f766e;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-family: var(--font-mono), monospace;
+}
+
+.prose-summary pre {
+  background: #1e293b;
+  color: #f1f5f9;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+  direction: ltr;
+  text-align: start;
+}
+
+.prose-summary pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: 0.8125rem;
+}
+
+.prose-summary hr {
+  border: none;
+  border-top: 2px solid #bae6fd;
+  margin: 1.5rem 0;
+}
+
+.prose-summary a {
+  color: #0d9488;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose-summary a:hover {
+  color: #0f766e;
+}
+
+/* ─── Dark mode prose-summary overrides ─── */
+.dark .prose-summary p {
+  color: var(--foreground);
+}
+
+.dark .prose-summary ul li,
+.dark .prose-summary ol li {
+  color: var(--foreground);
+}
+
+.dark .prose-summary h1 {
+  color: #93c5fd;
+  border-bottom-color: #1e3a5f;
+}
+
+.dark .prose-summary h2 {
+  color: #60a5fa;
+}
+
+.dark .prose-summary h3 {
+  color: #3b82f6;
+}
+
+.dark .prose-summary h4 {
+  color: #93c5fd;
+}
+
+/* Dark mode direction-aware blockquote */
+.dark .prose-summary blockquote {
+  background: oklch(0.19 0.02 175 / 40%);
+}
+
+/* Dark mode blockquote border */
+.dark .prose-summary blockquote {
+  border-inline-start-color: #14b8a6;
+}
+
+.dark .prose-summary blockquote p {
+  color: #5eead4;
+}
+
+.dark .prose-summary strong {
+  color: #60a5fa;
+}
+
+.dark .prose-summary em {
+  color: #cbd5e1;
+}
+
+.dark .prose-summary code {
+  background: oklch(0.19 0.02 175 / 40%);
+  color: #2dd4bf;
+}
+
+.dark .prose-summary th {
+  background: oklch(0.19 0.02 175 / 40%);
+  color: #93c5fd;
+  border-color: #1e3a5f;
+}
+
+.dark .prose-summary td {
+  border-color: oklch(0.28 0.015 260);
+}
+
+.dark .prose-summary hr {
+  border-top-color: #1e3a5f;
+}
+
+.dark .prose-summary a {
+  color: #2dd4bf;
+}
+
+.dark .prose-summary a:hover {
+  color: #5eead4;
+}
+
+.dark .prose-summary ul li::before {
+  color: #2dd4bf;
+}
+
+.dark .prose-summary ol li::before {
+  color: #60a5fa;
+}
+
+.prose-summary table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.875rem;
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.prose-summary th {
+  background: #f0fdfa;
+  color: #075985;
+  font-weight: 600;
+  padding-block: 0.5rem;
+  padding-inline: 0.75rem;
+  border: 1px solid #bae6fd;
+  text-align: start;
+}
+
+.prose-summary td {
+  padding-block: 0.5rem;
+  padding-inline: 0.75rem;
+  border: 1px solid #e5e7eb;
+  text-align: start;
+}
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #3b4252;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #4c566a;
+}
+
+/* Hide scrollbar but keep scroll functionality */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Mobile App-like Experience ─── */
+@layer base {
+  /* Prevent text size adjustment on orientation change (iOS) */
+  html {
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  /* Touch action optimization */
+  button, a, [role="button"], input, select, textarea {
+    touch-action: manipulation;
+  }
+
+  /* Safe area insets for modern phones */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Prevent iOS bounce scroll on fixed elements */
+  body {
+    overscroll-behavior-y: none;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Better tap highlight on mobile */
+  @media (hover: none) and (pointer: coarse) {
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Prevent sticky hover states on touch devices */
+    button:hover, a:hover, [role="button"]:hover {
+      opacity: 0.85;
+    }
+
+    /* Active states for tactile feedback */
+    button:active, a:active, [role="button"]:active {
+      opacity: 0.7;
+      transform: scale(0.98);
+    }
+
+    /* Disable backdrop-filter on touch devices to prevent iOS Safari hit-testing bug */
+    .backdrop-blur-sm, .backdrop-blur-md, .backdrop-blur-lg, .backdrop-blur-xl {
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+    }
+
+    /* Ensure modal exit animations don't leave ghost overlays that block taps */
+    [data-exiting="true"] {
+      pointer-events: none !important;
+    }
+  }
+}
+
+/* ─── Minimum Touch Target (44px) for Mobile Accessibility ─── */
+@layer utilities {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ─── Landscape Rotation Warning Overlay ─── */
+/* Shows a polite overlay asking users to rotate back to portrait on mobile.
+   Only visible on narrow touch devices in landscape orientation.
+   Hidden when user has disabled the lock in settings (adds .orientation-unlocked to html). */
+@media (hover: none) and (pointer: coarse) and (orientation: landscape) and (max-height: 500px) {
+  html:not(.orientation-unlocked) .landscape-rotate-overlay {
+    display: flex !important;
+  }
+}
+.landscape-rotate-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: hsl(var(--background));
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+}
+.landscape-rotate-overlay .rotate-phone-icon {
+  animation: rotatePhone 2s ease-in-out infinite;
+}
+@keyframes rotatePhone {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-90deg); }
+  50% { transform: rotate(-90deg); }
+  75% { transform: rotate(0deg); }
+}
+
+/* ─── Mobile Modal Fix: prevent bottom nav overlap ─── */
+/* On mobile, modal content can be hidden behind the fixed bottom nav (z-40, h-16 + safe-area).
+   These rules ensure modals (z-50) leave space at the bottom for scrolling. */
+@media (max-width: 768px) {
+  /* Radix Dialog content — constrain height and add bottom padding
+     so the scrollable area doesn't extend behind the bottom nav.
+     Exclude fullscreen editor dialog which has its own sizing. */
+  [data-slot="dialog-content"]:not(.fullscreen-editor-dialog) {
+    max-height: calc(85dvh - 4rem) !important;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  /* Sheet content from bottom — add safe area */
+  [data-slot="sheet-content"][data-side="bottom"] {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  /* Vaul Drawer content — add bottom padding */
+  [data-slot="drawer-content"] {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  /* Custom AnimatePresence modals — add bottom padding to the overlay container
+     so the centered modal card is pushed up above the bottom nav.
+     Only targets flex-centered overlays (not Dialog/Sheet/Drawer which handle
+     their own positioning). */
+  .fixed.inset-0.z-50.flex.items-center.justify-center {
+    padding-bottom: 5rem;
+  }
+
+  /* Lecture modal uses pointer-events-none on overlay */
+  .fixed.inset-0.z-50.pointer-events-none {
+    padding-bottom: 5rem;
+  }
+}
+
+/* ─── Anti-Screenshot & Screen Recording Protection for Quiz Pages ─── */
+/* When the quiz-protected class is active (page hidden/blur), blur all content */
+body.quiz-protected > * {
+  filter: blur(20px) !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+/* Overlay message when screen capture is detected - direction-aware */
+body.quiz-capture-detected::after {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(220, 38, 38, 0.97);
+}
+
+/* RTL version of screen capture overlay */
+[dir="rtl"] body.quiz-capture-detected::after {
+  content: "🚫 تم اكتشاف تسجيل الشاشة";
+  direction: rtl;
+}
+
+/* LTR version of screen capture overlay */
+[dir="ltr"] body.quiz-capture-detected::after {
+  content: "🚫 Screen recording detected";
+  direction: ltr;
+}
+
+/* Prevent text selection on quiz pages for copy protection */
+body.quiz-protected,
+body.quiz-capture-detected {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+/* ─── Direction-Aware Sidebar Positioning ─── */
+/* Uses CSS logical property for automatic RTL/LTR support */
+.sidebar-fixed {
+  inset-inline-start: 0;
+}
+
+/* ─── TipTap Rich Text Editor (ProseMirror) Styles ─── */
+.prose-editor {
+  line-height: 1.75;
+  color: var(--foreground);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.prose-editor > *:first-child {
+  margin-top: 0;
+}
+
+/* Headings */
+.prose-editor h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.4;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-editor h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose-editor h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-top: 1rem;
+  margin-bottom: 0.375rem;
+}
+
+/* Paragraphs */
+.prose-editor p {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Lists */
+.prose-editor ul {
+  list-style-type: disc;
+  padding-inline-start: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.prose-editor ol {
+  list-style-type: decimal;
+  padding-inline-start: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.prose-editor li {
+  margin-bottom: 0.25rem;
+}
+
+.prose-editor li > ul,
+.prose-editor li > ol {
+  margin: 0.25rem 0;
+}
+
+/* Blockquote */
+.prose-editor blockquote {
+  border-inline-start: 4px solid #f59e0b;
+  padding-inline-start: 1rem;
+  padding-block: 0.5rem;
+  margin: 0.75rem 0;
+  font-style: italic;
+  color: var(--muted-foreground);
+}
+
+.prose-editor blockquote p {
+  margin: 0;
+}
+
+/* Code */
+.prose-editor code {
+  background: var(--muted);
+  color: var(--foreground);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-family: var(--font-mono), monospace;
+}
+
+.prose-editor pre {
+  background: var(--muted);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.prose-editor pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+}
+
+/* Lowlight syntax highlighting */
+.prose-editor pre .hljs-comment,
+.prose-editor pre .hljs-quote {
+  color: #6b7280;
+}
+.prose-editor pre .hljs-keyword,
+.prose-editor pre .hljs-selector-tag {
+  color: #7c3aed;
+}
+.prose-editor pre .hljs-string,
+.prose-editor pre .hljs-addition {
+  color: #059669;
+}
+.prose-editor pre .hljs-number,
+.prose-editor pre .hljs-literal {
+  color: #d97706;
+}
+.prose-editor pre .hljs-built_in,
+.prose-editor pre .hljs-type {
+  color: #0891b2;
+}
+.prose-editor pre .hljs-title,
+.prose-editor pre .hljs-section {
+  color: #2563eb;
+}
+.prose-editor pre .hljs-attr,
+.prose-editor pre .hljs-attribute {
+  color: #059669;
+}
+.prose-editor pre .hljs-name,
+.prose-editor pre .hljs-tag {
+  color: #7c3aed;
+}
+.prose-editor pre .hljs-variable,
+.prose-editor pre .hljs-template-variable {
+  color: #dc2626;
+}
+.prose-editor pre .hljs-deletion {
+  color: #dc2626;
+}
+
+.dark .prose-editor pre .hljs-comment,
+.dark .prose-editor pre .hljs-quote {
+  color: #6b7280;
+}
+.dark .prose-editor pre .hljs-keyword,
+.dark .prose-editor pre .hljs-selector-tag {
+  color: #c084fc;
+}
+.dark .prose-editor pre .hljs-string,
+.dark .prose-editor pre .hljs-addition {
+  color: #34d399;
+}
+.dark .prose-editor pre .hljs-number,
+.dark .prose-editor pre .hljs-literal {
+  color: #fbbf24;
+}
+.dark .prose-editor pre .hljs-built_in,
+.dark .prose-editor pre .hljs-type {
+  color: #22d3ee;
+}
+.dark .prose-editor pre .hljs-title,
+.dark .prose-editor pre .hljs-section {
+  color: #60a5fa;
+}
+.dark .prose-editor pre .hljs-attr,
+.dark .prose-editor pre .hljs-attribute {
+  color: #34d399;
+}
+.dark .prose-editor pre .hljs-name,
+.dark .prose-editor pre .hljs-tag {
+  color: #c084fc;
+}
+.dark .prose-editor pre .hljs-variable,
+.dark .prose-editor pre .hljs-template-variable {
+  color: #f87171;
+}
+.dark .prose-editor pre .hljs-deletion {
+  color: #f87171;
+}
+
+/* Horizontal Rule */
+.prose-editor hr {
+  border: none;
+  border-top: 2px solid var(--border);
+  margin: 1rem 0;
+}
+
+/* Links */
+.prose-editor a {
+  color: #0284c7;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.prose-editor a:hover {
+  color: #0369a1;
+}
+
+.dark .prose-editor a {
+  color: #38bdf8;
+}
+
+.dark .prose-editor a:hover {
+  color: #7dd3fc;
+}
+
+/* Images - shared between editor and read-only view */
+.prose-editor img,
+.prose-editor-wrapper img {
+  border-radius: 0.5rem;
+  max-width: 100%;
+  height: auto;
+  margin: 0.75rem 0;
+  transition: width 0.2s ease;
+}
+
+/* Images with explicit width via style attribute - constrain to container */
+.prose-editor img[style*="width"],
+.prose-editor-wrapper img[style*="width"] {
+  max-width: 100%;
+}
+
+/* Image alignment */
+.prose-editor img[data-align="left"],
+.prose-editor-wrapper img[data-align="left"] {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.prose-editor img[data-align="center"],
+.prose-editor-wrapper img[data-align="center"] {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.prose-editor img[data-align="right"],
+.prose-editor-wrapper img[data-align="right"] {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.prose-editor img.ProseMirror-selectednode {
+  outline: 2px solid #0284c7;
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+/* Tables */
+.prose-editor table {
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.prose-editor table .selectedCell::after {
+  z-index: 2;
+  position: absolute;
+  content: "";
+  inset: 0;
+  background-color: oklch(0.55 0.12 240 / 10%);
+  pointer-events: none;
+}
+
+.prose-editor td,
+.prose-editor th {
+  border: 1px solid var(--border);
+  padding: 0.5rem;
+  min-width: 80px;
+  vertical-align: top;
+  position: relative;
+  text-align: start;
+}
+
+.prose-editor th {
+  background: var(--muted);
+  font-weight: 600;
+}
+
+/* YouTube embed - shared between editor and read-only view */
+.prose-editor .youtube-embed-wrapper,
+.prose-editor-wrapper .youtube-embed-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  margin: 0.75rem 0;
+  border-radius: 0.5rem;
+}
+
+.prose-editor .youtube-embed-wrapper iframe,
+.prose-editor-wrapper .youtube-embed-wrapper iframe {
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0.5rem;
+}
+
+.prose-editor .youtube-embed-wrapper.ProseMirror-selectednode {
+  outline: 2px solid #0284c7;
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+/* YouTube alignment */
+.prose-editor .youtube-embed-wrapper[data-align="left"],
+.prose-editor-wrapper .youtube-embed-wrapper[data-align="left"] {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.prose-editor .youtube-embed-wrapper[data-align="center"],
+.prose-editor-wrapper .youtube-embed-wrapper[data-align="center"] {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.prose-editor .youtube-embed-wrapper[data-align="right"],
+.prose-editor-wrapper .youtube-embed-wrapper[data-align="right"] {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+/* YouTube width control */
+.prose-editor .youtube-embed-wrapper[style*="width"],
+.prose-editor-wrapper .youtube-embed-wrapper[style*="width"] {
+  max-width: 100%;
+}
+
+/* Placeholder */
+.prose-editor p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: inline-start;
+  color: var(--muted-foreground);
+  pointer-events: none;
+  height: 0;
+}
+
+/* Highlight mark */
+.prose-editor mark {
+  border-radius: 0.15em;
+  padding: 0.05em 0.15em;
+  box-decoration-break: clone;
+}
+
+/* Strikethrough */
+.prose-editor s {
+  text-decoration: line-through;
+}
+
+/* Editor wrapper for auto-grow */
+.prose-editor-wrapper .tiptap {
+  min-height: 400px;
+}
+
+/* Fullscreen editor: tiptap fills available space */
+.fullscreen-editor-dialog .prose-editor-wrapper .tiptap {
+  min-height: unset;
+  height: 100%;
+}
+
+/* ─── Columns Layout ─────────────────────────────────────────────────────── */
+.prose-editor .editor-columns,
+.prose-editor-wrapper .editor-columns {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 1rem;
+  margin: 0.75rem 0;
+  width: 100%;
+}
+
+.prose-editor .editor-column,
+.prose-editor-wrapper .editor-column {
+  flex: 1 1 0% !important;
+  min-width: 0;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px dashed var(--border);
+  transition: border-color 0.2s;
+}
+
+.prose-editor .editor-column:hover,
+.prose-editor-wrapper .editor-column:hover {
+  border-color: #0284c7;
+}
+
+/* Column content inherits prose styles */
+.prose-editor .editor-column p,
+.prose-editor-wrapper .editor-column p {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.prose-editor .editor-column p:first-child,
+.prose-editor-wrapper .editor-column p:first-child {
+  margin-top: 0;
+}
+
+.prose-editor .editor-column img,
+.prose-editor-wrapper .editor-column img {
+  max-width: 100%;
+}
+
+/* 3-column layout: equal widths */
+.prose-editor .editor-columns[data-cols="3"] .editor-column,
+.prose-editor-wrapper .editor-columns[data-cols="3"] .editor-column {
+  flex: 1;
+}
+
+/* Responsive: stack columns on mobile */
+@media (max-width: 640px) {
+  .prose-editor .editor-columns,
+  .prose-editor-wrapper .editor-columns {
+    flex-direction: column;
+  }
+}
+
+/* ─── Image Float ──────────────────────────────────────────────────────────── */
+.prose-editor img[data-float="left"],
+.prose-editor-wrapper img[data-float="left"] {
+  float: left;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.prose-editor img[data-float="right"],
+.prose-editor-wrapper img[data-float="right"] {
+  float: right;
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+/* Clearfix for floated images */
+.prose-editor p::after,
+.prose-editor-wrapper p::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+/* Table resize handle */
+.prose-editor .column-resize-handle {
+  position: absolute;
+  inset-inline-end: -2px;
+  top: 0;
+  bottom: -2px;
+  width: 4px;
+  background-color: #0284c7;
+  pointer-events: none;
+}
+
+.prose-editor .tableWrapper {
+  overflow-x: auto;
+  margin: 0.75rem 0;
+}
+
+.prose-editor .resize-cursor {
+  cursor: ew-resize;
+  cursor: col-resize;
+}
+
+/* ─── Columns Layout ─────────────────────────────────────────────────────── */
+.prose-editor .editor-columns,
+.prose-editor-wrapper .editor-columns {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 1rem;
+  margin: 0.75rem 0;
+  width: 100%;
+}
+
+.prose-editor .editor-column,
+.prose-editor-wrapper .editor-column {
+  flex: 1 1 0% !important;
+  min-width: 0;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px dashed var(--border);
+  transition: border-color 0.2s;
+}
+
+.prose-editor .editor-column:hover,
+.prose-editor-wrapper .editor-column:hover {
+  border-color: #0284c7;
+}
+
+/* Column content inherits prose styles */
+.prose-editor .editor-column p,
+.prose-editor-wrapper .editor-column p {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.prose-editor .editor-column p:first-child,
+.prose-editor-wrapper .editor-column p:first-child {
+  margin-top: 0;
+}
+
+.prose-editor .editor-column img,
+.prose-editor-wrapper .editor-column img {
+  max-width: 100%;
+}
+
+/* 3-column layout: equal widths */
+.prose-editor .editor-columns[data-cols="3"] .editor-column,
+.prose-editor-wrapper .editor-columns[data-cols="3"] .editor-column {
+  flex: 1;
+}
+
+/* Responsive: stack columns on mobile */
+@media (max-width: 640px) {
+  .prose-editor .editor-columns,
+  .prose-editor-wrapper .editor-columns {
+    flex-direction: column !important;
+  }
+}
+
+/* ─── Image Float ──────────────────────────────────────────────────────────── */
+.prose-editor img[data-float="left"],
+.prose-editor-wrapper img[data-float="left"] {
+  float: left;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.prose-editor img[data-float="right"],
+.prose-editor-wrapper img[data-float="right"] {
+  float: right;
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+/* Clearfix for floated images */
+.prose-editor p::after,
+.prose-editor-wrapper p::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+/* Fullscreen editor: tiptap fills available space */
+.fullscreen-editor-dialog .prose-editor-wrapper .tiptap {
+  min-height: unset;
+  height: 100%;
+}
