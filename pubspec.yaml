@@ -1,0 +1,120 @@
+name: attendo_student
+description: "AttenDo Student - م### تطبيق الطالب لمنصة أتيندو التعليمية"
+publish_to: 'none'
+version: 0.2.0+1
+
+environment:
+  sdk: ^3.12.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State Management
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+
+  # Navigation
+  go_router: ^14.8.1
+
+  # Database & Auth
+  supabase_flutter: ^2.8.4
+
+  # Network
+  dio: ^5.7.0
+  connectivity_plus: ^6.1.4
+
+  # Real-time
+  socket_io_client: ^3.1.2
+
+  # UI Components
+  cupertino_icons: ^1.0.8
+  lucide_icons: ^0.257.0
+  flutter_svg: ^2.0.17
+
+  # Charts
+  fl_chart: ^0.70.2
+
+  # Forms & Validation
+  # reactiverouter: ^0.1.0
+
+  # Storage
+  shared_preferences: ^2.5.3
+  flutter_secure_storage: ^9.2.4
+
+  # File Handling
+  file_picker: ^8.1.7
+  path_provider: ^2.1.5
+  open_file: ^3.5.10
+
+  # PDF
+  syncfusion_flutter_pdfviewer: ^28.2.12
+
+  # Media
+  image_picker: ^1.1.2
+  cached_network_image: ^3.4.1
+
+  # QR Code
+  mobile_scanner: ^6.0.7
+  qr_flutter: ^4.1.0
+
+  # Notifications
+  flutter_local_notifications: ^18.0.1
+  firebase_messaging: ^15.2.5
+  firebase_core: ^3.12.2
+
+  # Utilities
+  intl: ^0.20.2
+  timezone: ^0.10.1
+  url_launcher: ^6.3.1
+  share_plus: ^10.1.4
+  timeago: ^3.7.0
+  shimmer: ^3.0.0
+  pull_to_refresh_flutter3: ^2.0.2
+  animations: ^2.0.12
+  flutter_animate: ^4.5.2
+
+  # AI
+  google_generative_ai: ^0.4.7
+
+  # Markdown/Rich Text
+  flutter_markdown: ^0.7.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  riverpod_generator: ^2.6.3
+  build_runner: ^2.4.14
+  custom_lint: ^0.7.1
+  riverpod_lint: ^2.6.3
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/i18n/
+
+  fonts:
+    - family: GeistSans
+      fonts:
+        - asset: assets/fonts/Geist-Regular.ttf
+        - asset: assets/fonts/Geist-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Geist-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Geist-Light.ttf
+          weight: 300
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo-Regular.ttf
+        - asset: assets/fonts/Cairo-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Cairo-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Cairo-Light.ttf
+          weight: 300

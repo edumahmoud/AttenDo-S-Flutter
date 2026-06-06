@@ -1,0 +1,88 @@
+/// Application-wide constants for the AttenDo student app.
+class AppConstants {
+  AppConstants._();
+
+  // ─── App Identity ───
+  static const String appName = 'AttenDo';
+  static const String appNameAr = 'أتيندو';
+  static const String appVersion = '0.2.0';
+
+  // ─── Supabase ───
+  static const String supabaseUrl = 'YOUR_SUPABASE_URL';
+  static const String supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
+
+  // ─── API ───
+  static const String apiBaseUrl = 'YOUR_API_BASE_URL';
+
+  // ─── Socket ───
+  static const String socketUrl = 'YOUR_SOCKET_URL';
+
+  // ─── Storage Keys ───
+  static const String authStorageKey = 'attendo_auth';
+  static const String authDataKey = 'auth_data';
+  static const String appStoreKey = 'attendo_app_store';
+  static const String localeKey = 'attendo_locale';
+  static const String themeKey = 'attendo_theme';
+  static const String themeModeKey = 'app_theme_mode';
+
+  // ─── Timeouts ───
+  static const Duration connectTimeout = Duration(seconds: 15);
+  static const Duration receiveTimeout = Duration(seconds: 30);
+  static const Duration sendTimeout = Duration(seconds: 15);
+
+  // ─── Supabase Storage Buckets ───
+  static const String avatarsBucket = 'avatars';
+  static const String assignmentsBucket = 'assignments';
+  static const String materialsBucket = 'materials';
+
+  // ─── Navigation ───
+  static const Duration animationDuration = Duration(milliseconds: 300);
+  static const double sidebarExpandedWidth = 264;
+  static const double sidebarCollapsedWidth = 68;
+  static const double headerHeight = 64;
+  static const double bottomNavHeight = 64;
+
+  // ─── Pagination ───
+  static const int defaultPageSize = 20;
+
+  // ─── Attendance ───
+  static const double gpsMaxDistanceMeters = 50;
+
+  // ─── User Roles ───
+  static const String roleStudent = 'student';
+  static const String roleTeacher = 'teacher';
+  static const String roleAdmin = 'admin';
+  static const String roleSuperadmin = 'superadmin';
+
+  // ─── Attendance Status ───
+  static const String attendancePresent = 'present';
+  static const String attendanceAbsent = 'absent';
+  static const String attendanceLate = 'late';
+  static const String attendanceExcused = 'excused';
+
+  // ─── File Limits ───
+  static const int maxFileSizeMB = 10;
+  static const int maxFileSizeBytes = maxFileSizeMB * 1024 * 1024;
+  static const int maxAvatarSizeMB = 5;
+  static const int maxAvatarSizeBytes = maxAvatarSizeMB * 1024 * 1024;
+
+  // ─── Password ───
+  static const int passwordMinLength = 6;
+  static const int usernameMinLength = 3;
+
+  // ─── Date Formats ───
+  static const String dateFormatAr = 'yyyy/MM/dd';
+  static const String dateFormatEn = 'dd/MM/yyyy';
+  static const String timeFormat = 'HH:mm';
+  static const String dateTimeFormatAr = 'yyyy/MM/dd HH:mm';
+  static const String dateTimeFormatEn = 'dd/MM/yyyy HH:mm';
+
+  // ─── Quiz ───
+  static const int quizDefaultDurationMinutes = 30;
+
+  // ─── Summary ───
+  static const int summaryTimeoutSeconds = 120;
+
+  // ─── Chat ───
+  static const int chatMessageMaxLength = 2000;
+}

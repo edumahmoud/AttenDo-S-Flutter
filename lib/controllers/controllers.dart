@@ -1,0 +1,19 @@
+// Barrel file for all controllers
+export 'auth_controller.dart';
+export 'navigation_controller.dart';
+export 'student_dashboard_controller.dart';
+export 'summaries_controller.dart';
+export 'quiz_controller.dart';
+export 'subjects_controller.dart';
+export 'assignments_controller.dart';
+export 'attendance_controller.dart';
+export 'teachers_controller.dart';
+export 'chat_controller.dart';
+export 'notifications_controller.dart';
+export 'todos_controller.dart';
+export 'files_controller.dart';
+export 'tracking_controller.dart';
+export 'settings_controller.dart';
+export 'reports_controller.dart';
+export 'calendar_controller.dart';
+export 'videos_controller.dart';
