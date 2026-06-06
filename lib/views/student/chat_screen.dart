@@ -418,15 +418,15 @@ class _ConversationDetailScreenState
           .fetchMessages(widget.conversation.id);
 
       // Listen for new messages to auto-scroll
-      final socketSvc = ref.read(socketServiceProvider);
-      _messageSub = socketSvc.onNewMessage().listen((message) {
+      final chatSvc = ref.read(realtimeChatServiceProvider);
+      _messageSub = chatSvc.onNewMessage().listen((message) {
         if (message.conversationId == widget.conversation.id && mounted) {
           _scrollToBottom();
         }
       });
 
       // Listen for typing events
-      socketSvc.onTyping().listen((data) {
+      chatSvc.onTyping().listen((data) {
         if (data['conversationId'] == widget.conversation.id && mounted) {
           setState(() {
             _isTyping = data['isTyping'] == true;
@@ -625,7 +625,7 @@ class _ConversationDetailScreenState
     _scrollToBottom();
 
     // Stop typing
-    ref.read(socketServiceProvider).emitStopTyping(widget.conversation.id);
+    ref.read(realtimeChatServiceProvider).emitStopTyping(widget.conversation.id);
   }
 
   void _handleAttachment() {
