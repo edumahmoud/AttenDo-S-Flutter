@@ -1,12 +1,17 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:socket_io_client/socket_io_client.dart' as io;
-import '../config/constants/app_constants.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/models.dart';
+import 'supabase_service.dart';
 
+/// خدمة المحادثة الفورية المعتمدة على Supabase Realtime
+/// بدلاً من Socket.IO - كل الرسائل والتنبيهات تتم عبر Supabase Realtime
 class SocketService {
-  io.Socket? _socket;
+  final SupabaseClient _client;
+  RealtimeChannel? _chatChannel;
+  RealtimeChannel? _presenceChannel;
   bool _connected = false;
+  String? _currentUserId;
 
   // Stream controllers for real-time events
   final StreamController<ChatMessage> _messageController =
@@ -18,111 +23,130 @@ class SocketService {
   final StreamController<String> _userOfflineController =
       StreamController<String>.broadcast();
 
+  SocketService(this._client);
+
   // ---------------------------------------------------------------------------
   // Connection
   // ---------------------------------------------------------------------------
 
-  /// Connect to the Socket.IO server with the given user ID and auth token.
+  /// الاتصال بـ Supabase Realtime
   void connect({required String userId, required String token}) {
-    if (_connected && _socket != null) return;
+    if (_connected) return;
+    _currentUserId = userId;
 
     try {
-      _socket = io.io(
-        AppConstants.socketUrl,
-        io.OptionBuilder()
-            .setTransports(['websocket'])
-            .disableAutoConnect()
-            .setExtraHeaders({
-              'Authorization': 'Bearer $token',
-            })
-            .build(),
-      );
+      // قناة الحضور (Presence) لتتبع المستخدمين المتصلين
+      _presenceChannel = _client.channel('online-users');
 
-      _socket!.on('connect', (_) {
-        _connected = true;
-        _socket!.emit('user:online', {'userId': userId});
-      });
-
-      _socket!.on('disconnect', (_) {
-        _connected = false;
-      });
-
-      _socket!.on('connect_error', (data) {
-        _connected = false;
-      });
-
-      // Bind real-time event listeners
-      _socket!.on('message:new', (data) {
-        if (!_messageController.isClosed) {
-          _messageController.add(
-            ChatMessage.fromJson(data as Map<String, dynamic>),
-          );
+      // عندما مستخدم يتصل
+      _presenceChannel!.onPresenceJoin((payload) {
+        for (final presence in payload.newPresences) {
+          final uid = presence.payload['user_id'] as String?;
+          if (uid != null && uid != _currentUserId) {
+            if (!_userOnlineController.isClosed) {
+              _userOnlineController.add(uid);
+            }
+          }
         }
       });
 
-      _socket!.on('typing', (data) {
-        if (!_typingController.isClosed) {
-          _typingController.add(data as Map<String, dynamic>);
+      // عندما مستخدم ينقطع
+      _presenceChannel!.onPresenceLeave((payload) {
+        for (final presence in payload.leftPresences) {
+          final uid = presence.payload['user_id'] as String?;
+          if (uid != null && uid != _currentUserId) {
+            if (!_userOfflineController.isClosed) {
+              _userOfflineController.add(uid);
+            }
+          }
         }
       });
 
-      _socket!.on('user:online', (data) {
-        if (!_userOnlineController.isClosed) {
-          final userId = (data as Map<String, dynamic>)['userId'] as String?;
-          if (userId != null) _userOnlineController.add(userId);
-        }
+      _presenceChannel!.subscribe((status, error) {});
+
+      // تسجيل حضور المستخدم الحالي
+      _presenceChannel!.track({
+        'user_id': userId,
+        'online_at': DateTime.now().toIso8601String(),
       });
 
-      _socket!.on('user:offline', (data) {
-        if (!_userOfflineController.isClosed) {
-          final userId = (data as Map<String, dynamic>)['userId'] as String?;
-          if (userId != null) _userOfflineController.add(userId);
-        }
-      });
-
-      _socket!.connect();
+      _connected = true;
     } catch (e) {
+      _connected = false;
       rethrow;
     }
   }
 
-  /// Disconnect from the Socket.IO server and clean up.
+  /// قطع الاتصال من Supabase Realtime
   void disconnect() {
-    _socket?.disconnect();
-    _socket?.dispose();
-    _socket = null;
+    _chatChannel?.unsubscribe();
+    _presenceChannel?.untrack();
+    _presenceChannel?.unsubscribe();
     _connected = false;
   }
 
-  /// Whether the socket is currently connected.
+  /// هل الاتصال نشط؟
   bool get isConnected => _connected;
 
   // ---------------------------------------------------------------------------
   // Conversation Management
   // ---------------------------------------------------------------------------
 
-  /// Join a conversation room so messages are received.
+  /// الاشتراك في محادثة لاستقبال الرسائل الجديدة عبر Supabase Realtime
   void joinConversation(String conversationId) {
-    _socket?.emit('conversation:join', {'conversationId': conversationId});
+    // إلغاء اشتراك القناة القديمة
+    _chatChannel?.unsubscribe();
+
+    // إنشاء قناة Realtime للمحادثة
+    _chatChannel = _client.channel('chat:$conversationId');
+
+    _chatChannel!
+        .onPostgresChanges(
+      event: PostgresChangeEvent.insert,
+      schema: 'public',
+      table: 'chat_messages',
+      filter: PostgresChangeFilter(
+        type: PostgresChangeFilterType.eq,
+        column: 'conversation_id',
+        value: conversationId,
+      ),
+      callback: (PostgresChangePayload payload) {
+        if (!_messageController.isClosed) {
+          final newMessage = payload.newRecord;
+          // لا نعيد بث الرسائل المرسلة من المستخدم الحالي
+          if (newMessage['sender_id'] != _currentUserId) {
+            _messageController.add(
+              ChatMessage.fromJson(newMessage),
+            );
+          }
+        }
+      },
+    )
+        .subscribe((status, error) {});
   }
 
-  /// Leave a conversation room.
+  /// إلغاء الاشتراك من محادثة
   void leaveConversation(String conversationId) {
-    _socket?.emit('conversation:leave', {'conversationId': conversationId});
+    _chatChannel?.unsubscribe();
+    _chatChannel = null;
   }
 
   // ---------------------------------------------------------------------------
   // Sending Messages
   // ---------------------------------------------------------------------------
 
-  /// Send a chat message to a conversation.
-  void sendMessage({
+  /// إرسال رسالة محادثة - تُحفظ في قاعدة البيانات وسيتم بثها تلقائياً عبر Realtime
+  Future<void> sendMessage({
     required String conversationId,
     required String content,
-  }) {
-    _socket?.emit('message:send', {
-      'conversationId': conversationId,
-      'content': content,
+  }) async {
+    if (_currentUserId == null) return;
+
+    await _client.from('chat_messages').insert({
+      'conversation_id': conversationId,
+      'sender_id': _currentUserId,
+      'content': content.trim(),
+      'message_type': 'text',
     });
   }
 
@@ -130,37 +154,52 @@ class SocketService {
   // Typing Indicators
   // ---------------------------------------------------------------------------
 
-  /// Emit a typing event for a conversation.
+  /// بث حالة الكتابة عبر Presence
   void emitTyping(String conversationId) {
-    _socket?.emit('typing', {'conversationId': conversationId});
+    _presenceChannel?.track({
+      'user_id': _currentUserId,
+      'typing_in': conversationId,
+      'online_at': DateTime.now().toIso8601String(),
+    });
+
+    if (!_typingController.isClosed) {
+      _typingController.add({
+        'conversationId': conversationId,
+        'userId': _currentUserId,
+      });
+    }
   }
 
-  /// Emit a stop-typing event for a conversation.
+  /// إيقاف حالة الكتابة
   void emitStopTyping(String conversationId) {
-    _socket?.emit('stop:typing', {'conversationId': conversationId});
+    _presenceChannel?.track({
+      'user_id': _currentUserId,
+      'typing_in': null,
+      'online_at': DateTime.now().toIso8601String(),
+    });
   }
 
   // ---------------------------------------------------------------------------
   // Streams
   // ---------------------------------------------------------------------------
 
-  /// Stream of new incoming chat messages.
+  /// استقبال الرسائل الجديدة
   Stream<ChatMessage> onNewMessage() => _messageController.stream;
 
-  /// Stream of typing events (maps with conversationId, userId, etc.).
+  /// استقبال أحداث الكتابة
   Stream<Map<String, dynamic>> onTyping() => _typingController.stream;
 
-  /// Stream of user-online events (emits userId).
+  /// استقبال أحداث اتصال المستخدمين
   Stream<String> onUserOnline() => _userOnlineController.stream;
 
-  /// Stream of user-offline events (emits userId).
+  /// استقبال أحداث انقطاع المستخدمين
   Stream<String> onUserOffline() => _userOfflineController.stream;
 
   // ---------------------------------------------------------------------------
   // Cleanup
   // ---------------------------------------------------------------------------
 
-  /// Dispose all stream controllers. Call when the service is no longer needed.
+  /// تنظيف الموارد
   void dispose() {
     disconnect();
     _messageController.close();
@@ -175,30 +214,31 @@ class SocketService {
 // ---------------------------------------------------------------------------
 
 final socketServiceProvider = Provider<SocketService>((ref) {
-  final service = SocketService();
+  final client = ref.watch(supabaseClientProvider);
+  final service = SocketService(client);
   ref.onDispose(() => service.dispose());
   return service;
 });
 
-/// Provider that exposes the new-message stream for the current socket.
+/// استقبال الرسائل الجديدة
 final chatMessagesProvider = StreamProvider<ChatMessage>((ref) {
   final socketService = ref.watch(socketServiceProvider);
   return socketService.onNewMessage();
 });
 
-/// Provider that exposes typing events.
+/// استقبال أحداث الكتابة
 final typingEventsProvider = StreamProvider<Map<String, dynamic>>((ref) {
   final socketService = ref.watch(socketServiceProvider);
   return socketService.onTyping();
 });
 
-/// Provider that exposes user-online events.
+/// استقبال أحداث اتصال المستخدمين
 final userOnlineProvider = StreamProvider<String>((ref) {
   final socketService = ref.watch(socketServiceProvider);
   return socketService.onUserOnline();
 });
 
-/// Provider that exposes user-offline events.
+/// استقبال أحداث انقطاع المستخدمين
 final userOfflineProvider = StreamProvider<String>((ref) {
   final socketService = ref.watch(socketServiceProvider);
   return socketService.onUserOffline();

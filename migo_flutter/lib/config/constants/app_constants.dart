@@ -13,12 +13,12 @@ class AppConstants {
 
   // ─── API ───
   // رابط خادم Next.js اللي عليه الـ API routes
-  // غيّره لرابط المشروع النشر بتاعك (مثلاً: https://attendo.vercel.app)
+  // غيّره لرابط المشروع المنشور بتاعك (مثلاً: https://attendo.vercel.app)
   static const String apiBaseUrl = 'https://tuoxwggvafuuabugdduh.supabase.co';
 
-  // ─── Socket ───
-  // رابط خادم Socket.IO للمحادثة الفورية
-  static const String socketUrl = 'https://tuoxwggvafuuabugdduh.supabase.co';
+  // ─── Realtime ───
+  // المحادثة الفورية معتمدة على Supabase Realtime (مش Socket.IO منفصل)
+  // فمش محتاجين socketUrl منفصل
 
   // ─── Storage Keys ───
   static const String authStorageKey = 'attendo_auth';
