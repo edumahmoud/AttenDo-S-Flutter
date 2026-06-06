@@ -8,14 +8,17 @@ class AppConstants {
   static const String appVersion = '0.2.0';
 
   // ─── Supabase ───
-  static const String supabaseUrl = 'YOUR_SUPABASE_URL';
-  static const String supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
+  static const String supabaseUrl = 'https://tuoxwggvafuuabugdduh.supabase.co';
+  static const String supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b3h3Z2d2YWZ1dWFidWdkZHVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwODk2MDQsImV4cCI6MjA5MTY2NTYwNH0.nXGlyVrpHwza93jN40EYgewV7fxmh4FSApp9yk1GLAA';
 
   // ─── API ───
-  static const String apiBaseUrl = 'YOUR_API_BASE_URL';
+  // رابط خادم Next.js اللي عليه الـ API routes
+  // غيّره لرابط المشروع النشر بتاعك (مثلاً: https://attendo.vercel.app)
+  static const String apiBaseUrl = 'https://tuoxwggvafuuabugdduh.supabase.co';
 
   // ─── Socket ───
-  static const String socketUrl = 'YOUR_SOCKET_URL';
+  // رابط خادم Socket.IO للمحادثة الفورية
+  static const String socketUrl = 'https://tuoxwggvafuuabugdduh.supabase.co';
 
   // ─── Storage Keys ───
   static const String authStorageKey = 'attendo_auth';
