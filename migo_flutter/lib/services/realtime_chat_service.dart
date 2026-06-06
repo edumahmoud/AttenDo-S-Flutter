@@ -5,8 +5,9 @@ import '../models/models.dart';
 import 'supabase_service.dart';
 
 /// خدمة المحادثة الفورية المعتمدة على Supabase Realtime
-/// بدلاً من Socket.IO - كل الرسائل والتنبيهات تتم عبر Supabase Realtime
-class SocketService {
+/// كل الرسائل والتنبيهات وحالة الحضور تتم عبر Supabase Realtime Channels
+/// لا يتم استخدام Socket.IO - الاتصال الفوري يعتمد كلياً على Supabase
+class RealtimeChatService {
   final SupabaseClient _client;
   RealtimeChannel? _chatChannel;
   RealtimeChannel? _presenceChannel;
@@ -23,7 +24,7 @@ class SocketService {
   final StreamController<String> _userOfflineController =
       StreamController<String>.broadcast();
 
-  SocketService(this._client);
+  RealtimeChatService(this._client);
 
   // ---------------------------------------------------------------------------
   // Connection
@@ -213,33 +214,33 @@ class SocketService {
 // Riverpod Providers
 // ---------------------------------------------------------------------------
 
-final socketServiceProvider = Provider<SocketService>((ref) {
+final realtimeChatServiceProvider = Provider<RealtimeChatService>((ref) {
   final client = ref.watch(supabaseClientProvider);
-  final service = SocketService(client);
+  final service = RealtimeChatService(client);
   ref.onDispose(() => service.dispose());
   return service;
 });
 
 /// استقبال الرسائل الجديدة
 final chatMessagesProvider = StreamProvider<ChatMessage>((ref) {
-  final socketService = ref.watch(socketServiceProvider);
-  return socketService.onNewMessage();
+  final chatService = ref.watch(realtimeChatServiceProvider);
+  return chatService.onNewMessage();
 });
 
 /// استقبال أحداث الكتابة
 final typingEventsProvider = StreamProvider<Map<String, dynamic>>((ref) {
-  final socketService = ref.watch(socketServiceProvider);
-  return socketService.onTyping();
+  final chatService = ref.watch(realtimeChatServiceProvider);
+  return chatService.onTyping();
 });
 
 /// استقبال أحداث اتصال المستخدمين
 final userOnlineProvider = StreamProvider<String>((ref) {
-  final socketService = ref.watch(socketServiceProvider);
-  return socketService.onUserOnline();
+  final chatService = ref.watch(realtimeChatServiceProvider);
+  return chatService.onUserOnline();
 });
 
 /// استقبال أحداث انقطاع المستخدمين
 final userOfflineProvider = StreamProvider<String>((ref) {
-  final socketService = ref.watch(socketServiceProvider);
-  return socketService.onUserOffline();
+  final chatService = ref.watch(realtimeChatServiceProvider);
+  return chatService.onUserOffline();
 });

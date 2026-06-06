@@ -12,9 +12,8 @@ class AppConstants {
   static const String supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b3h3Z2d2YWZ1dWFidWdkZHVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwODk2MDQsImV4cCI6MjA5MTY2NTYwNH0.nXGlyVrpHwza93jN40EYgewV7fxmh4FSApp9yk1GLAA';
 
   // ─── API ───
-  // رابط خادم Next.js اللي عليه الـ API routes
-  // غيّره لرابط المشروع المنشور بتاعك (مثلاً: https://attendo.vercel.app)
-  static const String apiBaseUrl = 'https://tuoxwggvafuuabugdduh.supabase.co';
+  // رابط خادم Next.js المنشور على Vercel اللي عليه الـ API routes
+  static const String apiBaseUrl = 'https://lms-attendo.vercel.app';
 
   // ─── Realtime ───
   // المحادثة الفورية معتمدة على Supabase Realtime (مش Socket.IO منفصل)

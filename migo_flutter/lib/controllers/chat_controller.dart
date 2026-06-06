@@ -58,19 +58,19 @@ class ChatState {
 // ─── Chat Controller ───
 
 class ChatController extends StateNotifier<ChatState> {
-  final SocketService _socketService;
+  final RealtimeChatService _realtimeChatService;
   final SupabaseService _supabaseService;
   StreamSubscription<ChatMessage>? _messageSubscription;
 
   ChatController(
-    this._socketService,
+    this._realtimeChatService,
     this._supabaseService,
   ) : super(const ChatState()) {
-    _listenToSocketMessages();
+    _listenToRealtimeMessages();
   }
 
-  void _listenToSocketMessages() {
-    _messageSubscription = _socketService.onNewMessage().listen((message) {
+  void _listenToRealtimeMessages() {
+    _messageSubscription = _realtimeChatService.onNewMessage().listen((message) {
       if (message.conversationId == state.activeConversationId) {
         state = state.copyWith(messages: [...state.messages, message]);
       }
@@ -117,8 +117,8 @@ class ChatController extends StateNotifier<ChatState> {
       activeConversationId: conversationId,
     );
 
-    // Join the conversation room on socket
-    _socketService.joinConversation(conversationId);
+    // Join the conversation room via Supabase Realtime
+    _realtimeChatService.joinConversation(conversationId);
 
     try {
       final data = await _supabaseService.client
@@ -150,19 +150,13 @@ class ChatController extends StateNotifier<ChatState> {
       final userId = _supabaseService.currentUser?.id;
       if (userId == null) throw Exception('Not authenticated');
 
-      // Insert message via Supabase
+      // Insert message via Supabase - Realtime will broadcast it automatically
       await _supabaseService.client.from('chat_messages').insert({
         'conversation_id': conversationId,
         'sender_id': userId,
         'content': content.trim(),
         'message_type': 'text',
       });
-
-      // Also emit via socket for real-time delivery
-      _socketService.sendMessage(
-        conversationId: conversationId,
-        content: content.trim(),
-      );
 
       state = state.copyWith(isSending: false);
     } catch (e) {
@@ -180,18 +174,18 @@ class ChatController extends StateNotifier<ChatState> {
     final token = _supabaseService.currentSession?.accessToken;
     if (userId == null || token == null) return;
 
-    _socketService.connect(userId: userId, token: token);
+    _realtimeChatService.connect(userId: userId, token: token);
     state = state.copyWith(isSocketConnected: true);
   }
 
   void disconnectSocket() {
-    _socketService.disconnect();
+    _realtimeChatService.disconnect();
     state = state.copyWith(isSocketConnected: false);
   }
 
   void leaveActiveConversation() {
     if (state.activeConversationId != null) {
-      _socketService.leaveConversation(state.activeConversationId!);
+      _realtimeChatService.leaveConversation(state.activeConversationId!);
     }
     state = state.copyWith(clearActiveConversation: true, messages: []);
   }
@@ -216,7 +210,7 @@ class ChatController extends StateNotifier<ChatState> {
 final chatControllerProvider =
     StateNotifierProvider<ChatController, ChatState>((ref) {
   return ChatController(
-    ref.watch(socketServiceProvider),
+    ref.watch(realtimeChatServiceProvider),
     ref.watch(supabaseServiceProvider),
   );
 });
