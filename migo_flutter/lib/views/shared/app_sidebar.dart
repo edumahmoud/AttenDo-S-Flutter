@@ -281,7 +281,7 @@ class _AppSidebarState extends ConsumerState<AppSidebar> {
     Color fgColor,
     bool isCollapsed,
   ) {
-    final authState = ref.watch(authStateProvider);
+    final authState = ref.watch(appAuthStateProvider);
     final theme = Theme.of(context);
     final loc = AppLocalizations.of(context);
 

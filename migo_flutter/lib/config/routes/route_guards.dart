@@ -8,20 +8,22 @@ import '../constants/app_constants.dart';
 
 /// Provider that tracks the current authentication state.
 ///
-/// Replace with actual Supabase auth integration.
-final authStateProvider = StateProvider<AuthState>((ref) => const AuthState(
+/// Used by route guards and UI widgets that need simple auth state.
+/// Named `appAuthStateProvider` to avoid conflict with Supabase's
+/// `authStateProvider` (StreamProvider) defined in auth_service.dart.
+final appAuthStateProvider = StateProvider<AppAuthState>((ref) => const AppAuthState(
       isAuthenticated: false,
       userRole: null,
       userId: null,
     ));
 
-/// Immutable authentication state.
-class AuthState {
+/// Immutable authentication state for route guards and UI.
+class AppAuthState {
   final bool isAuthenticated;
   final String? userRole;
   final String? userId;
 
-  const AuthState({
+  const AppAuthState({
     required this.isAuthenticated,
     this.userRole,
     this.userId,
@@ -35,12 +37,12 @@ class AuthState {
 
   bool get isSuperadmin => userRole == AppConstants.roleSuperadmin;
 
-  AuthState copyWith({
+  AppAuthState copyWith({
     bool? isAuthenticated,
     String? userRole,
     String? userId,
   }) {
-    return AuthState(
+    return AppAuthState(
       isAuthenticated: isAuthenticated ?? this.isAuthenticated,
       userRole: userRole ?? this.userRole,
       userId: userId ?? this.userId,
@@ -52,7 +54,7 @@ class AuthState {
 
 /// Encapsulates route-guard logic for the AttenDo student app.
 ///
-/// Uses Riverpod to check [authStateProvider] and redirects
+/// Uses Riverpod to check [appAuthStateProvider] and redirects
 /// unauthenticated or non-student users accordingly.
 class RouteGuards {
   final Ref _ref;
@@ -68,7 +70,7 @@ class RouteGuards {
 
   /// Main guard logic — called by GoRouter's redirect.
   String? guard(BuildContext context, GoRouterState state) {
-    final auth = _ref.read(authStateProvider);
+    final auth = _ref.read(appAuthStateProvider);
     final currentPath = state.matchedLocation;
 
     final isPublicPath = publicPaths.any(

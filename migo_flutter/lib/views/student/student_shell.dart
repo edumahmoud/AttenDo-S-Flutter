@@ -337,7 +337,7 @@ class _StudentShellState extends ConsumerState<StudentShell> {
               size: 20,
             ),
             onPressed: () {
-              ref.read(authStateProvider.notifier).state = const AuthState(
+              ref.read(appAuthStateProvider.notifier).state = const AppAuthState(
                 isAuthenticated: false,
                 userRole: null,
                 userId: null,

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../config/theme/app_colors.dart';
 import '../../i18n/app_localizations.dart';
 import '../../services/auth_service.dart' hide authStateProvider;
-import '../../config/routes/route_guards.dart' show authStateProvider, AuthState;
+import '../../config/routes/route_guards.dart' show appAuthStateProvider, AppAuthState;
 
 /// Full-featured login screen matching the original AttenDo design.
 ///
@@ -60,7 +60,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (!mounted) return;
 
       // Update auth state
-      ref.read(authStateProvider.notifier).state = AuthState(
+      ref.read(appAuthStateProvider.notifier).state = AppAuthState(
         isAuthenticated: true,
         userRole: profile.role,
         userId: profile.id,
@@ -92,7 +92,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       if (!mounted) return;
 
-      ref.read(authStateProvider.notifier).state = AuthState(
+      ref.read(appAuthStateProvider.notifier).state = AppAuthState(
         isAuthenticated: true,
         userRole: profile.role,
         userId: profile.id,
@@ -345,17 +345,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     onPressed: _isLoading
                                         ? null
                                         : _handleGoogleSignIn,
-                                    icon: Image.asset(
-                                      'assets/icons/google_logo.png',
-                                      width: 20,
-                                      height: 20,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                        return const Icon(
-                                          Icons.g_mobiledata_rounded,
-                                          size: 24,
-                                        );
-                                      },
+                                    icon: const Icon(
+                                      Icons.g_mobiledata_rounded,
+                                      size: 24,
                                     ),
                                     label: Text(
                                       loc.t('auth.login.googleSignIn'),

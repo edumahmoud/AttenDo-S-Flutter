@@ -209,7 +209,7 @@ class _UserMenu extends ConsumerWidget {
             // TODO: Navigate to settings
             break;
           case 'signout':
-            ref.read(authStateProvider.notifier).state = const AuthState(
+            ref.read(appAuthStateProvider.notifier).state = const AppAuthState(
               isAuthenticated: false,
               userRole: null,
               userId: null,

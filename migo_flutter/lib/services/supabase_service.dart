@@ -17,7 +17,7 @@ class SupabaseService {
 
     await Supabase.initialize(
       url: AppConstants.supabaseUrl,
-      publishableKey: AppConstants.supabaseAnonKey,
+      anonKey: AppConstants.supabaseAnonKey,
     );
 
     _client = Supabase.instance.client;
