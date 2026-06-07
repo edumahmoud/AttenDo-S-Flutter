@@ -122,7 +122,7 @@ class ChatController extends StateNotifier<ChatState> {
 
     try {
       final data = await _supabaseService.client
-          .from('chat_messages')
+          .from('messages')
           .select()
           .eq('conversation_id', conversationId)
           .order('created_at', ascending: true)

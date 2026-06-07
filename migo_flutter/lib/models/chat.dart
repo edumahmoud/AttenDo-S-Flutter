@@ -18,22 +18,22 @@ class ChatMessageInfo {
   factory ChatMessageInfo.fromJson(Map<String, dynamic> json) {
     return ChatMessageInfo(
       id: json['id'] as String,
-      senderId: json['senderId'] as String?,
-      senderName: json['senderName'] as String?,
-      senderAvatar: json['senderAvatar'] as String?,
+      senderId: json['sender_id'] as String?,
+      senderName: json['sender_name'] as String?,
+      senderAvatar: json['sender_avatar'] as String?,
       content: json['content'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      createdAt: DateTime.parse(json['created_at'] as String),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'senderId': senderId,
-      'senderName': senderName,
-      'senderAvatar': senderAvatar,
+      'sender_id': senderId,
+      'sender_name': senderName,
+      'sender_avatar': senderAvatar,
       'content': content,
-      'createdAt': createdAt.toIso8601String(),
+      'created_at': createdAt.toIso8601String(),
     };
   }
 
@@ -61,53 +61,50 @@ class ChatMessage {
   final String conversationId;
   final String senderId;
   final String content;
-  final String? messageType; // text, image, file
-  final String? fileUrl;
-  final String? fileName;
-  final bool? isRead;
+  final bool isDeleted;
+  final bool isEdited;
+  final DateTime? editedAt;
   final DateTime createdAt;
-  final DateTime updatedAt;
 
   const ChatMessage({
     required this.id,
     required this.conversationId,
     required this.senderId,
     required this.content,
-    this.messageType,
-    this.fileUrl,
-    this.fileName,
-    this.isRead,
+    this.isDeleted = false,
+    this.isEdited = false,
+    this.editedAt,
     required this.createdAt,
-    required this.updatedAt,
   });
 
+  /// Parses from Supabase snake_case column names
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
     return ChatMessage(
       id: json['id'] as String,
-      conversationId: json['conversationId'] as String,
-      senderId: json['senderId'] as String,
+      conversationId: json['conversation_id'] as String,
+      senderId: json['sender_id'] as String,
       content: json['content'] as String,
-      messageType: json['messageType'] as String?,
-      fileUrl: json['fileUrl'] as String?,
-      fileName: json['fileName'] as String?,
-      isRead: json['isRead'] as bool?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      isDeleted: json['is_deleted'] as bool? ?? false,
+      isEdited: json['is_edited'] as bool? ?? false,
+      editedAt: json['edited_at'] != null
+          ? DateTime.parse(json['edited_at'] as String)
+          : null,
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'] as String)
+          : DateTime.now(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'conversationId': conversationId,
-      'senderId': senderId,
+      'conversation_id': conversationId,
+      'sender_id': senderId,
       'content': content,
-      'messageType': messageType,
-      'fileUrl': fileUrl,
-      'fileName': fileName,
-      'isRead': isRead,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'is_deleted': isDeleted,
+      'is_edited': isEdited,
+      'edited_at': editedAt?.toIso8601String(),
+      'created_at': createdAt.toIso8601String(),
     };
   }
 
@@ -116,63 +113,54 @@ class ChatMessage {
     String? conversationId,
     String? senderId,
     String? content,
-    String? messageType,
-    String? fileUrl,
-    String? fileName,
-    bool? isRead,
+    bool? isDeleted,
+    bool? isEdited,
+    DateTime? editedAt,
     DateTime? createdAt,
-    DateTime? updatedAt,
   }) {
     return ChatMessage(
       id: id ?? this.id,
       conversationId: conversationId ?? this.conversationId,
       senderId: senderId ?? this.senderId,
       content: content ?? this.content,
-      messageType: messageType ?? this.messageType,
-      fileUrl: fileUrl ?? this.fileUrl,
-      fileName: fileName ?? this.fileName,
-      isRead: isRead ?? this.isRead,
+      isDeleted: isDeleted ?? this.isDeleted,
+      isEdited: isEdited ?? this.isEdited,
+      editedAt: editedAt ?? this.editedAt,
       createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 }
 
 class Conversation {
   final String id;
-  final String type; // direct, group
-  final String? name;
-  final String? avatarUrl;
-  final List<String> participantIds;
-  final ChatMessageInfo? lastMessage;
+  final String type; // individual, group
+  final String? title;
+  final String? subjectId;
   final DateTime createdAt;
   final DateTime updatedAt;
 
   const Conversation({
     required this.id,
     required this.type,
-    this.name,
-    this.avatarUrl,
-    required this.participantIds,
-    this.lastMessage,
+    this.title,
+    this.subjectId,
     required this.createdAt,
     required this.updatedAt,
   });
 
+  /// Parses from Supabase snake_case column names
   factory Conversation.fromJson(Map<String, dynamic> json) {
     return Conversation(
       id: json['id'] as String,
-      type: json['type'] as String,
-      name: json['name'] as String?,
-      avatarUrl: json['avatarUrl'] as String?,
-      participantIds:
-          List<String>.from(json['participantIds'] as List),
-      lastMessage: json['lastMessage'] != null
-          ? ChatMessageInfo.fromJson(
-              json['lastMessage'] as Map<String, dynamic>)
-          : null,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      type: json['type'] as String? ?? 'group',
+      title: json['title'] as String?,
+      subjectId: json['subject_id'] as String?,
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'] as String)
+          : DateTime.now(),
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'] as String)
+          : DateTime.now(),
     );
   }
 
@@ -180,32 +168,32 @@ class Conversation {
     return {
       'id': id,
       'type': type,
-      'name': name,
-      'avatarUrl': avatarUrl,
-      'participantIds': participantIds,
-      'lastMessage': lastMessage?.toJson(),
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'title': title,
+      'subject_id': subjectId,
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt.toIso8601String(),
     };
   }
+
+  /// Display name: title if set, otherwise fallback
+  String? get name => title;
+
+  /// Avatar URL - derived from subject or left null
+  String? get avatarUrl => null;
 
   Conversation copyWith({
     String? id,
     String? type,
-    String? name,
-    String? avatarUrl,
-    List<String>? participantIds,
-    ChatMessageInfo? lastMessage,
+    String? title,
+    String? subjectId,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
     return Conversation(
       id: id ?? this.id,
       type: type ?? this.type,
-      name: name ?? this.name,
-      avatarUrl: avatarUrl ?? this.avatarUrl,
-      participantIds: participantIds ?? this.participantIds,
-      lastMessage: lastMessage ?? this.lastMessage,
+      title: title ?? this.title,
+      subjectId: subjectId ?? this.subjectId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

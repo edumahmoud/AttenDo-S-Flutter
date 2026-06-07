@@ -183,7 +183,7 @@ class AuthService {
 
   Future<UserProfile> _fetchUserProfile(String userId) async {
     final data = await _supabaseService.client
-        .from('profiles')
+        .from('users')
         .select()
         .eq('id', userId)
         .single();

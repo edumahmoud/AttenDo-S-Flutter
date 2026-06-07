@@ -53,7 +53,7 @@ class SubjectsController extends StateNotifier<SubjectsState> {
       if (userId == null) throw Exception('Not authenticated');
 
       final data = await _supabaseService.client
-          .from('student_subjects')
+          .from('subject_students')
           .select('subject:subjects(*)')
           .eq('student_id', userId);
 

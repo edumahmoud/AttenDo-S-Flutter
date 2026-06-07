@@ -277,8 +277,7 @@ class _ConversationCard extends StatelessWidget {
     final loc = AppLocalizations.of(context);
 
     final displayName = conversation.name ?? loc.t('chat.title');
-    final lastMsg = conversation.lastMessage;
-    final timeAgo = lastMsg != null ? _formatTimeAgo(lastMsg.createdAt, loc) : '';
+    final timeAgo = _formatTimeAgo(conversation.updatedAt, loc);
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
@@ -324,7 +323,9 @@ class _ConversationCard extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            lastMsg?.content ?? '',
+                            conversation.type == 'group'
+                                ? loc.t('chat.group')
+                                : loc.t('chat.title'),
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: colorScheme.onSurfaceVariant,
                             ),
@@ -712,29 +713,19 @@ class _MessageBubble extends StatelessWidget {
                     ),
                   ),
 
-                // File attachment indicator
-                if (message.messageType == 'file' &&
-                    message.fileName != null) ...[
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(LucideIcons.fileText,
-                          size: 16, color: textColor),
-                      const SizedBox(width: 6),
-                      Flexible(
-                        child: Text(
-                          message.fileName!,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: textColor,
-                            decoration: TextDecoration.underline,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                // Edited indicator
+                if (message.isEdited) ...[
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 2),
+                    child: Text(
+                      '(edited)',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: textColor.withValues(alpha: 0.5),
+                        fontStyle: FontStyle.italic,
+                        fontSize: 10,
                       ),
-                    ],
+                    ),
                   ),
-                  const SizedBox(height: 6),
                 ],
 
                 // Message content
@@ -759,12 +750,11 @@ class _MessageBubble extends StatelessWidget {
                         fontSize: 10,
                       ),
                     ),
+                    // Sent indicator
                     if (isMe) ...[
                       const SizedBox(width: 4),
                       Icon(
-                        message.isRead == true
-                            ? LucideIcons.checkCheck
-                            : LucideIcons.check,
+                        LucideIcons.check,
                         size: 14,
                         color: textColor.withValues(alpha: 0.6),
                       ),

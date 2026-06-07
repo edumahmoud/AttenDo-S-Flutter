@@ -110,20 +110,7 @@ class CalendarController extends StateNotifier<CalendarState> {
       final startDate = DateTime(year, month, 1);
       final endDate = DateTime(year, month + 1, 0, 23, 59, 59);
 
-      final data = await _supabaseService.client
-          .from('calendar_events')
-          .select()
-          .eq('user_id', userId)
-          .gte('start_date', startDate.toIso8601String())
-          .lte('start_date', endDate.toIso8601String())
-          .order('start_date', ascending: true);
-
-      final events = (data as List<dynamic>)
-          .map((json) =>
-              CalendarEvent.fromJson(json as Map<String, dynamic>))
-          .toList();
-
-      // Also aggregate events from other sources (assignments, quizzes, todos)
+      // No 'calendar_events' table exists — aggregate from assignments, quizzes, todos
       final aggregatedEvents = await _aggregateEvents(
         month,
         year,
@@ -131,7 +118,7 @@ class CalendarController extends StateNotifier<CalendarState> {
       );
 
       state = state.copyWith(
-        events: [...events, ...aggregatedEvents],
+        events: aggregatedEvents,
         isLoading: false,
       );
     } catch (e) {

@@ -62,7 +62,7 @@ class VideosController extends StateNotifier<VideosState> {
 
       // Fetch subject IDs for the student
       final subjectData = await _supabaseService.client
-          .from('student_subjects')
+          .from('subject_students')
           .select('subject_id')
           .eq('student_id', userId);
 

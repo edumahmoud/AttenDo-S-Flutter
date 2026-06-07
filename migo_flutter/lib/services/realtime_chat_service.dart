@@ -105,7 +105,7 @@ class RealtimeChatService {
         .onPostgresChanges(
       event: PostgresChangeEvent.insert,
       schema: 'public',
-      table: 'chat_messages',
+      table: 'messages',
       filter: PostgresChangeFilter(
         type: PostgresChangeFilterType.eq,
         column: 'conversation_id',
@@ -143,11 +143,10 @@ class RealtimeChatService {
   }) async {
     if (_currentUserId == null) return;
 
-    await _client.from('chat_messages').insert({
+    await _client.from('messages').insert({
       'conversation_id': conversationId,
       'sender_id': _currentUserId,
       'content': content.trim(),
-      'message_type': 'text',
     });
   }
 

@@ -100,7 +100,7 @@ class SettingsController extends StateNotifier<SettingsState> {
       if (userId == null) throw Exception('Not authenticated');
 
       await _supabaseService.client
-          .from('profiles')
+          .from('users')
           .update(data)
           .eq('id', userId);
 
