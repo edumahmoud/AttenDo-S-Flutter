@@ -24,9 +24,32 @@ class AuthService {
         email: email,
         password: password,
       );
-      return await _fetchUserProfile(response.user!.id);
+
+      final userId = response.user?.id;
+      if (userId == null) {
+        throw const AuthFailure(message: 'Login failed – no user returned.');
+      }
+
+      // Try to fetch profile from 'users' table
+      try {
+        return await _fetchUserProfile(userId);
+      } catch (profileError) {
+        // If profile fetch fails, create a basic profile from auth data
+        // This handles cases where the DB trigger hasn't created the row yet
+        final authUser = response.user!;
+        return UserProfile(
+          id: authUser.id,
+          email: authUser.email ?? email,
+          name: authUser.userMetadata?['name'] as String? ??
+              email.split('@').first,
+          role: authUser.userMetadata?['role'] as String? ?? 'student',
+          createdAt: DateTime.now(),
+        );
+      }
     } on AuthException catch (e) {
       throw AuthFailure(message: e.message, code: e.statusCode);
+    } on AuthFailure {
+      rethrow;
     } catch (e) {
       throw AuthFailure(message: e.toString());
     }
